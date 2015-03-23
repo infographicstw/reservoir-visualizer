@@ -1,0 +1,19 @@
+{
+  "author": "infographics.tw",
+  "name": "reservoir-visualizer",
+  "description": "visualize reservoir data",
+  "version": "0.0.1",
+  "homepage": "https://github.com/infographicstw/reservoir-visualizer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infographicstw/reservoir-visualizer"
+  },
+  "engines": {
+    "node": ">=0.8.18",
+    "npm": ">=1.2.2"
+  },
+  "scripts": {
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
