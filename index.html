@@ -27,9 +27,18 @@
   </head>
   <body ng-app="main" ng-controller="main">
     <div id="root">
-      <h2>台灣水庫近期蓄水量圖</h2>
-      <div class="desc">當下及近三個月的水庫蓄水率走勢 / 資料來源：<a href="http://fhy.wra.gov.tw/ReservoirPage_2011/StorageCapacity.aspx">經濟部水利署</a></div>
-      <hr><br>
+      <div class="fb-box pull-right">
+        <div data-href="https://www.facebook.com/data.visualize" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false" class="fb-like-box"></div><br>
+      </div>
+      <h2><img src="aqua.png">台灣水庫近期蓄水量圖</h2>
+      <div class="desc">
+        當下及近三個月的水庫蓄水率走勢。剩餘天數取最近七天消耗量之平均除當前蓄水量預估，僅供參考。
+        資料來源：<a href="http://fhy.wra.gov.tw/ReservoirPage_2011/StorageCapacity.aspx">經濟部水利署</a>&nbsp;/&nbsp;<a href="http://github.com/infographicstw/reservoir-history-crawler">資料截取程式</a>
+      </div>
+      <hr>
+      <div class="pull-right">
+        <div data-href="http://data.infographics.tw/viz/reservoir/" data-width="300" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" class="fb-like"></div>
+      </div>
       <div class="reservoir-type">
         <h3>水情告急的主要水庫</h3>
         <div ng-show="loading.exigency" class="loading"><img src="loading.gif">loading</div>
@@ -132,6 +141,19 @@
           <div ng-if="res.remains &lt;= 20 &amp;&amp; res.remains &gt;= 0" class="remains">預估將在<em>{{res.remains}}</em>週後耗盡</div>
         </div>
       </div>
+      <div class="footer">
+        <div class="pull-right">by <a href="http://blog.infographics.tw">infographics.tw</a>, 2015</div><img src="loading.gif" style="width:24px">可愛的水滴圖示是利用 <a href="http://loading.io">loading.io</a> 產生的。
+      </div>
     </div>
+    <div id="fb-root"></div>
+    <script>
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&appId=1587437048209186&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+    </script>
   </body>
 </html>

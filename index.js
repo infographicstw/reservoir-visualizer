@@ -108,7 +108,7 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
       $scope.reservoirs.push(obj);
     }
     $scope.exigency = $scope.reservoirs.filter(function(it){
-      return primaryName.indexOf(it.name) >= 0 && it.remains <= 13;
+      return primaryName.indexOf(it.name) >= 0 && it.remains <= 13 && it.remains >= 0;
     });
     $scope.loading.exigency = false;
     $timeout(function(){

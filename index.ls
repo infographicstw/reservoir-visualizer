@@ -66,7 +66,7 @@ angular.module \main, <[]>
           end: dates[* - 1]
           remains: remains
         $scope.reservoirs.push obj
-      $scope.exigency = $scope.reservoirs.filter -> (primary-name.indexOf(it.name) >= 0 and it.remains <= 13)
+      $scope.exigency = $scope.reservoirs.filter -> (primary-name.indexOf(it.name) >= 0 and it.remains <= 13 and it.remains >= 0)
       $scope.loading.exigency = false
       $timeout ->
         $scope.loading.primary = false

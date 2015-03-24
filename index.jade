@@ -65,12 +65,40 @@ html(lang="en")
     script(type="text/javascript",src="index.js")
   body(ng-app="main",ng-controller="main")
     #root
-      h2 台灣水庫近期蓄水量圖
+      .fb-box.pull-right
+        .fb-like-box(data-href="https://www.facebook.com/data.visualize",data-colorscheme="light",
+          data-show-faces="false",data-header="false",data-stream="false",data-show-border="false")
+        br
+      h2 
+        img(src="aqua.png")
+        | 台灣水庫近期蓄水量圖
       .desc
-        | 當下及近三個月的水庫蓄水率走勢 / 資料來源：
+        | 當下及近三個月的水庫蓄水率走勢。剩餘天數取最近七天消耗量之平均除當前蓄水量預估，僅供參考。
+        | 資料來源：
         a(href="http://fhy.wra.gov.tw/ReservoirPage_2011/StorageCapacity.aspx") 經濟部水利署
-      hr
-      br
+        | &nbsp;/&nbsp;
+        a(href="http://github.com/infographicstw/reservoir-history-crawler") 資料截取程式
+      hr 
+      .pull-right: .fb-like(data-href="http://data.infographics.tw/viz/reservoir/",data-width="300",
+        data-layout="standard",data-action="like",data-show-faces="true",data-share="true")
       +reservoir("水情告急的主要水庫", "exigency")
       +reservoir("主要水庫", "primary")
       +reservoir("其它水庫", "secondary")
+      .footer
+        .pull-right
+          | by 
+          a(href="http://blog.infographics.tw") infographics.tw
+          | , 2015
+        img(src="loading.gif",style="width:24px")
+        | 可愛的水滴圖示是利用 
+        a(href="http://loading.io") loading.io
+        |  產生的。
+    #fb-root
+    script.
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&appId=1587437048209186&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
