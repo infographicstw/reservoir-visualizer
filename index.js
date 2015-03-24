@@ -28,7 +28,7 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
     url: 'live.json',
     method: 'GET'
   }).success(function(data){
-    var names, res$, k, dates, secondaryName, xAxis, yAxis, i$, len$, n, link, j$, i, d1, d2, p1, p2, nodata, volume, percent, idx, ref$, jdx, delta, remains, obj;
+    var names, res$, k, dates, secondaryName, xAxis, yAxis, i$, len$, n, link, j$, i, d1, d2, p1, p2, nodata, volume, percent, idx, ref$, jdx, delta, draining, remains, obj;
     res$ = [];
     for (k in data) {
       res$.push(k);
@@ -87,10 +87,21 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
         jdx--;
       }
       delta = (p2 - p1) / (idx - jdx + 1);
+      draining = 3;
+      jdx = idx - 1;
+      while (jdx >= idx - 7) {
+        if (data[n][dates[jdx]] && data[n][dates[jdx]].p <= p1) {
+          draining--;
+        }
+        jdx--;
+      }
       if (delta > 0) {
         remains = parseInt(p1 / 7 / delta);
       } else {
         remains = -1;
+      }
+      if (draining < 0) {
+        remains = 99;
       }
       obj = {
         name: n,

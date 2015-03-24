@@ -50,8 +50,14 @@ angular.module \main, <[]>
           p2 = data[n][dates[jdx]]p
           jdx--
         delta = (p2 - p1) / (idx - jdx + 1)
-        if delta > 0 => remains = parseInt(p1 / 7 / delta) else remains = -1
 
+        draining = 3
+        jdx = idx - 1
+        while jdx >= idx - 7 =>
+          if data[n][dates[jdx]] and data[n][dates[jdx]]p <= p1 => draining--
+          jdx--
+        if delta > 0 => remains = parseInt(p1 / 7 / delta) else remains = -1
+        if draining <0 => remains = 99
 
         obj = do
           name: n, 
