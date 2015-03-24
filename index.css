@@ -10,6 +10,12 @@ html, body {
   margin: 20px auto;
   font-family: "century gothic"; }
 
+.reservoir-type {
+  clear: both;
+  margin-bottom: 100px; }
+  .reservoir-type h3 {
+    margin-bottom: 20px; }
+
 .reservoir {
   clear: both; }
   .reservoir .pictochart {

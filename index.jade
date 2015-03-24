@@ -4,7 +4,54 @@ doctype html
 - var lib = { jquery: true, d3js: true, angular: true, bootstrap: true, semantic: false }
 - var assets = "assets"
 - var thumbnail = "http://data.infographics.tw/viz/reservoir/thumbnail.jpg"
-- var favicon = "http://data.infographics.tw/viz/reservoir/thumbnail.jpg"
+- var favicon = "http://data.infographics.tw/viz/reservoir/loading.gif"
+mixin reservoir(title,name)
+  .reservoir-type
+    h3= title
+    .loading(ng-show="loading."+name)
+      img(src="loading.gif")
+      | loading
+    .reservoir(ng-repeat="res in "+name)
+      .pictochart
+        svg(width="220px",height="300px",viewBox="0 0 240 320",preserveAspectRatio="xMidYMid")
+          path(d="M40 270 L120 310 L120 60 L40 30Z",fill="rgba(0,0,0,0.5)")
+          path(d="M200 270 L120 310 L120 60 L200 30Z",fill="rgba(0,0,0,0.3)")
+          path(d="M40 30 L120 60 L200 30 L120 0Z",fill="rgba(0,0,0,0.1)")
+          path(ng-attr-d="M60 260 L120 290 L120 {{res.bottom}} L60 {{res.side}}Z",ng-attr-fill="{{res.color}}",style="opacity: 0.8")
+          path(ng-attr-d="M180 260 L120 290 L120 {{res.bottom}} L180 {{res.side}}Z",ng-attr-fill="{{res.color}}",style="opacity:0.7")
+          path(ng-attr-d="M60 {{res.side}} L120 {{res.bottom}} L120 {{res.top}}Z",ng-attr-fill="{{res.color}}",style="opacity:0.6")
+          path(ng-attr-d="M180 {{res.side}} L120 {{res.bottom}} L120 {{res.top}}Z",ng-attr-fill="{{res.color}}",style="opacity:0.5")
+          text(ng-if="res.percent<0",x="120",y="120",style="font-weight:900;font-size:40px",dx="-20",dy="20",fill="rgba(0,0,0,0.5)") ?
+      .title
+        | {{res.name}}
+        small
+          | 當前蓄水量 {{res.volume}}M 
+          | (m
+          sup 3
+          | )
+        small(ng-if="res.percent>=0")
+          | &nbsp;/ 目前蓄水率 {{res.percent}}%
+        small(ng-if="res.percent<0")
+          | &nbsp;/ 無目前蓄水率資料
+      .line-chart
+        svg(width="600px",height="200px",viewBox="0 0 800 200", preserveAspectRatio="xMidYMid")
+          text(x="2",y="0",fill="#444",font-size="20") 近期水量走勢 (%)
+          line(x1="0",x2="765",y1="175",y2="175",stroke-width="2",stroke="#ccc")
+          line(x1="0",x2="765",y1="5",y2="5",stroke-width="2",stroke="#ccc")
+          line(x1="0",x2="765",y1="141",y2="141",stroke-width="2",stroke="#f00",stroke-dasharray="4 4")
+          text(x="770",y="141",text-anchor="start",dominant-baseline="central",fill="#f00") 20%
+          text(x="765",y="198",text-anchor="end",fill="#444") {{res.end}}
+          text(x="2",y="198",text-anchor="start",fill="#444") {{res.start}}
+          line(ng-repeat="link in res.link",
+            ng-attr-x1="{{link[0]}}",
+            ng-attr-x2="{{link[1]}}",
+            ng-attr-y1="{{link[2]}}",
+            ng-attr-y2="{{link[3]}}",stroke="#000",stroke-width="2")
+      .remains(ng-if="res.remains <= 20 && res.remains >= 0")
+        | 預估將在
+        em {{res.remains}}
+        | 週後耗盡
+
 html(lang="en")
   head(prefix="og: http://ogp.me/ns#")
     meta(charset="utf-8")
@@ -22,46 +69,8 @@ html(lang="en")
       .desc
         | 當下及近三個月的水庫蓄水率走勢 / 資料來源：
         a(href="http://fhy.wra.gov.tw/ReservoirPage_2011/StorageCapacity.aspx") 經濟部水利署
-
       hr
-      .reservoir(ng-repeat="res in reservoirs")
-        .pictochart
-          svg(width="220px",height="300px",viewBox="0 0 240 320",preserveAspectRatio="xMidYMid")
-            path(d="M40 270 L120 310 L120 60 L40 30Z",fill="rgba(0,0,0,0.5)")
-            path(d="M200 270 L120 310 L120 60 L200 30Z",fill="rgba(0,0,0,0.3)")
-            path(d="M40 30 L120 60 L200 30 L120 0Z",fill="rgba(0,0,0,0.1)")
-            path(ng-attr-d="M60 260 L120 290 L120 {{res.bottom}} L60 {{res.side}}Z",ng-attr-fill="{{res.color}}",style="opacity: 0.8")
-            path(ng-attr-d="M180 260 L120 290 L120 {{res.bottom}} L180 {{res.side}}Z",ng-attr-fill="{{res.color}}",style="opacity:0.7")
-            path(ng-attr-d="M60 {{res.side}} L120 {{res.bottom}} L120 {{res.top}}Z",ng-attr-fill="{{res.color}}",style="opacity:0.6")
-            path(ng-attr-d="M180 {{res.side}} L120 {{res.bottom}} L120 {{res.top}}Z",ng-attr-fill="{{res.color}}",style="opacity:0.5")
-            text(ng-if="res.percent<0",x="120",y="120",style="font-weight:900;font-size:40px",dx="-20",dy="20",fill="rgba(0,0,0,0.5)") ?
-        .title
-          | {{res.name}}
-          small
-            | 當前蓄水量 {{res.volume}}M 
-            | (m
-            sup 3
-            | )
-          small(ng-if="res.percent>=0")
-            | &nbsp;/ 目前蓄水率 {{res.percent}}%
-          small(ng-if="res.percent<0")
-            | &nbsp;/ 無目前蓄水率資料
-        .line-chart
-          svg(width="600px",height="200px",viewBox="0 0 800 200", preserveAspectRatio="xMidYMid")
-            text(x="2",y="0",fill="#444",font-size="20") 近期水量走勢 (%)
-            line(x1="0",x2="765",y1="175",y2="175",stroke-width="2",stroke="#ccc")
-            line(x1="0",x2="765",y1="5",y2="5",stroke-width="2",stroke="#ccc")
-            line(x1="0",x2="765",y1="141",y2="141",stroke-width="2",stroke="#f00",stroke-dasharray="4 4")
-            text(x="770",y="141",text-anchor="start",dominant-baseline="central",fill="#f00") 20%
-            text(x="765",y="198",text-anchor="end",fill="#444") {{res.end}}
-            text(x="2",y="198",text-anchor="start",fill="#444") {{res.start}}
-            line(ng-repeat="link in res.link",
-              ng-attr-x1="{{link[0]}}",
-              ng-attr-x2="{{link[1]}}",
-              ng-attr-y1="{{link[2]}}",
-              ng-attr-y2="{{link[3]}}",stroke="#000",stroke-width="2")
-
-        .remains(ng-if="res.remains <= 20 && res.remains >= 0")
-          | 預估將在
-          em {{res.remains}}
-          | 週後耗盡
+      br
+      +reservoir("水情告急的主要水庫", "exigency")
+      +reservoir("主要水庫", "primary")
+      +reservoir("其它水庫", "secondary")

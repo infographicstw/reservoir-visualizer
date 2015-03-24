@@ -1,5 +1,6 @@
 angular.module \main, <[]>
-  ..controller \main, <[$scope $http]> ++ ($scope, $http) ->
+  ..controller \main, <[$scope $http $timeout]> ++ ($scope, $http, $timeout) ->
+    primary-name = ["石門水庫", "新山水庫", "翡翠水庫", "寶山水庫", "寶山第二水庫", "永和山水庫", "明德水庫", "鯉魚潭水庫", "德基水庫", "石岡壩", "霧社水庫", "日月潭水庫", "仁義潭水庫", "蘭潭水庫", "烏山頭水庫", "曾文水庫", "南化水庫", "阿公店水庫", "阿公店水庫(洩洪至二仁溪)", "牡丹水庫", "成功水庫"]
     pad = (v, len=2)->
       u = "#v"
       if u.length < len => return (" " * (len - u.length)) + u
@@ -9,12 +10,18 @@ angular.module \main, <[]>
       bottom: d3.scale.linear!domain [0 100] .range [290 80]
       top:  d3.scale.linear!domain [0 100] .range [230 40]
     color = d3.scale.linear!domain [0 25 50 75 100] .range <[#f03 #f96 #ff9 #9fc #0ff]>
+    $scope.loading = do
+      exigency: true
+      primary: true
+      secondary: true
+
     $http do
       url: \live.json
       method: \GET
     .success (data) ->
       names = [k for k of data]
       dates = [k for k of data[names[0]]]sort!
+      secondary-name = names.filter -> primary-name.indexOf(it)<0
 
       x-axis = d3.scale.ordinal!domain dates .range [0 to 765 by 765/dates.length]
       y-axis = d3.scale.linear!domain [0 100] .range [173 7]
@@ -59,3 +66,13 @@ angular.module \main, <[]>
           end: dates[* - 1]
           remains: remains
         $scope.reservoirs.push obj
+      $scope.exigency = $scope.reservoirs.filter -> (primary-name.indexOf(it.name) >= 0 and it.remains <= 13)
+      $scope.loading.exigency = false
+      $timeout ->
+        $scope.loading.primary = false
+        $scope.primary = $scope.reservoirs.filter -> primary-name.indexOf(it.name) >= 0
+      , 1000
+      $timeout ->
+        $scope.loading.secondary = false
+        $scope.secondary = $scope.reservoirs.filter -> primary-name.indexOf(it.name) < 0
+      , 3000
