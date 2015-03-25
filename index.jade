@@ -14,14 +14,19 @@ mixin reservoir(title,name)
     .reservoir(ng-repeat="res in "+name)
       .pictochart
         svg(width="220px",height="300px",viewBox="0 0 240 320",preserveAspectRatio="xMidYMid")
-          path(d="M30 270 L35 270 L35 30 L30 30Z",fill="#ddd",stroke="#bbb")
-          path(ng-attr-d="M30 270 L35 270 L35 {{res.volumebar}} L30 {{res.volumebar}}Z",fill="#05b",stroke="#009")
-          text(transform="rotate(90 0 0) translate(130 -13)" rotate="-90 -90 -90 -90 -90 -90 -90") 實際最大蓄水量
-          text(transform="rotate(-90 0 0) translate(-270 25) scale(0.8)",fill="#999") 0
-          text(transform="rotate(-90 0 0) translate(-80 25) scale(0.8)",fill="#999") 600M m
-          text(transform="rotate(-90 0 0) translate(-36 18) scale(0.4)",fill="#999") 3
-          text(x="120",y="40",style="font-size:2.5em;font-weight:900;",text-anchor="middle",ng-cloak) {{res.percent}}
-          text(x="140",y="40",style="font-size:0.5em;font-weight:900;") %
+          path(d="M25 270 L30 273 L30 33 L25 30Z",fill="#d9d9d9",stroke="#bbb")
+          path(d="M35 270 L30 273 L30 33 L35 30Z",fill="#d4d4d4",stroke="#bbb")
+          path(d="M25 30 L30 33 L35 30 L30 27Z",fill="#f0f0f0",stroke="#bbb")
+          path(ng-attr-d="M25 270 L30 273 L30 {{res.volumebar + 3}} L25 {{res.volumebar}}Z",fill="#888",stroke="#666")
+          path(ng-attr-d="M35 270 L30 273 L30 {{res.volumebar + 3}} L35 {{res.volumebar}}Z",fill="#999",stroke="#777")
+          path(ng-attr-d="M25 {{res.volumebar}} L30 {{res.volumebar + 3}} L35 {{res.volumebar}} L30 {{res.volumebar - 3}}Z",fill="rgba(64,64,64,0.2)",stroke="#999")
+          text(transform="rotate(90 0 0) translate(130 -8)" rotate="-90 -90 -90 -90 -90 -90 -90") 實際最大容量
+          text(transform="rotate(-90 0 0) translate(-270 20) scale(0.8)",fill="#999") 0
+          text(transform="rotate(-90 0 0) translate(-80 20) scale(0.8)",fill="#999") 600M m
+          text(transform="rotate(-90 0 0) translate(-33 13) scale(0.2)",fill="#999") 3
+          text(x="120",y="48",fill="#444",style="font-size:2em;font-weight:900;",text-anchor="middle",ng-cloak) {{res.percent}}
+          text(x="140",y="43",fill="#444",style="font-size:12px;font-weight:900;") %
+          text(x="120",y="22",fill="#444",style="font-size:12px;font-weight:900;",text-anchor="middle") 蓄水率
 
           path(d="M40 270 L120 310 L120 60 L40 30Z",fill="rgba(0,0,0,0.5)")
           path(d="M200 270 L120 310 L120 60 L200 30Z",fill="rgba(0,0,0,0.3)")
