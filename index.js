@@ -28,7 +28,7 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
     url: 'live.json',
     method: 'GET'
   }).success(function(data){
-    var names, res$, k, dates, secondaryName, searchName, xAxis, yAxis, i$, len$, n, link, j$, i, d1, d2, p1, p2, nodata, volume, percent, idx, ref$, jdx, delta, draining, remains, obj;
+    var names, res$, k, dates, secondaryName, searchName, xAxis, yAxis, i$, len$, n, link, j$, i, d1, d2, p1, p2, nodata, volume, percent, idx, ref$, jdx, delta, draining, remains, capacity, volumebar, obj;
     res$ = [];
     for (k in data) {
       res$.push(k);
@@ -107,14 +107,26 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
       if (draining < 0) {
         remains = 99;
       }
+      idx = dates.length - 1;
+      capacity = -1;
+      while (capacity === -1) {
+        if (!data[n][dates[idx]]) {
+          break;
+        }
+        capacity = data[n][dates[idx]].c;
+        idx--;
+      }
+      volumebar = parseInt(270 - 240 * capacity / 60000);
       obj = {
         name: n,
         side: liquidHeight.side(data[n][dates[dates.length - 1]].p),
         bottom: liquidHeight.bottom(data[n][dates[dates.length - 1]].p),
         top: liquidHeight.top(data[n][dates[dates.length - 1]].p),
         color: color(data[n][dates[dates.length - 1]].p),
+        capacity: capacity,
         link: link,
         volume: volume,
+        volumebar: volumebar,
         percent: percent,
         start: dates[0],
         end: dates[dates.length - 1],

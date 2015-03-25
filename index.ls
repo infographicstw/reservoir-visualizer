@@ -60,6 +60,13 @@ angular.module \main, <[]>
           jdx--
         if delta > 0 => remains = parseInt(p1 / 7 / delta) else remains = -1
         if draining <0 => remains = 99
+        idx = dates.length - 1
+        capacity = -1
+        while capacity == -1 =>
+          if !data[n][dates[idx]] => break
+          capacity = data[n][dates[idx]]c
+          idx--
+        volumebar = parseInt(270 - (240 * capacity / 60000))
 
         obj = do
           name: n, 
@@ -67,8 +74,10 @@ angular.module \main, <[]>
           bottom: liquid-height.bottom data[n][dates[* - 1]]p
           top: liquid-height.top data[n][dates[* - 1]]p
           color: color data[n][dates[* - 1]]p
+          capacity: capacity
           link: link
           volume: volume
+          volumebar: volumebar
           percent: percent
           start: dates[0]
           end: dates[* - 1]
