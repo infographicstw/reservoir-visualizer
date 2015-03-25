@@ -23,7 +23,7 @@ mixin reservoir(title,name)
           path(ng-attr-d="M180 {{res.side}} L120 {{res.bottom}} L120 {{res.top}}Z",ng-attr-fill="{{res.color}}",style="opacity:0.5")
           text(ng-if="res.percent<0",x="120",y="120",style="font-weight:900;font-size:40px",dx="-20",dy="20",fill="rgba(0,0,0,0.5)") ?
       .title
-        | {{res.name}}
+        a(ng-attr-href="?{{res.name}}") {{res.name}}
         small
           | 當前蓄水量 {{res.volume}}M 
           | (m
@@ -81,6 +81,8 @@ html(lang="en")
       hr 
       .pull-right: .fb-like(data-href="http://data.infographics.tw/viz/reservoir/",data-width="300",
         data-layout="standard",data-action="like",data-show-faces="true",data-share="true")
+      div(ng-if="spot")
+        +reservoir("焦點水庫", "spot")
       +reservoir("水情告急的主要水庫", "exigency")
       +reservoir("主要水庫", "primary")
       +reservoir("其它水庫", "secondary")

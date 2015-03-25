@@ -28,7 +28,7 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
     url: 'live.json',
     method: 'GET'
   }).success(function(data){
-    var names, res$, k, dates, secondaryName, xAxis, yAxis, i$, len$, n, link, j$, i, d1, d2, p1, p2, nodata, volume, percent, idx, ref$, jdx, delta, draining, remains, obj;
+    var names, res$, k, dates, secondaryName, searchName, xAxis, yAxis, i$, len$, n, link, j$, i, d1, d2, p1, p2, nodata, volume, percent, idx, ref$, jdx, delta, draining, remains, obj;
     res$ = [];
     for (k in data) {
       res$.push(k);
@@ -44,6 +44,10 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
     secondaryName = names.filter(function(it){
       return primaryName.indexOf(it) < 0;
     });
+    searchName = decodeURIComponent(window.location.search.replace(/\?/g, ""));
+    if (names.indexOf(searchName) < 0) {
+      searchName = null;
+    }
     xAxis = d3.scale.ordinal().domain(dates).range((function(){
       var i$, step$, results$ = [];
       for (i$ = 0, step$ = 765 / dates.length; step$ < 0 ? i$ >= 765 : i$ <= 765; i$ += step$) {
@@ -117,6 +121,11 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
         remains: remains
       };
       $scope.reservoirs.push(obj);
+    }
+    if (searchName) {
+      $scope.spot = $scope.reservoirs.filter(function(it){
+        return it.name === searchName;
+      });
     }
     $scope.exigency = $scope.reservoirs.filter(function(it){
       return primaryName.indexOf(it.name) >= 0 && it.remains <= 13 && it.remains >= 0;

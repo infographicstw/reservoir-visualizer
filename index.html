@@ -39,6 +39,42 @@
       <div class="pull-right">
         <div data-href="http://data.infographics.tw/viz/reservoir/" data-width="300" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" class="fb-like"></div>
       </div>
+      <div ng-if="spot">
+        <div class="reservoir-type">
+          <h3>焦點水庫</h3>
+          <div ng-show="loading.spot" class="loading"><img src="loading.gif">loading</div>
+          <div ng-repeat="res in spot" class="reservoir">
+            <div class="pictochart">
+              <svg width="220px" height="300px" viewBox="0 0 240 320" preserveAspectRatio="xMidYMid">
+                <path d="M40 270 L120 310 L120 60 L40 30Z" fill="rgba(0,0,0,0.5)"></path>
+                <path d="M200 270 L120 310 L120 60 L200 30Z" fill="rgba(0,0,0,0.3)"></path>
+                <path d="M40 30 L120 60 L200 30 L120 0Z" fill="rgba(0,0,0,0.1)"></path>
+                <path ng-attr-d="M60 260 L120 290 L120 {{res.bottom}} L60 {{res.side}}Z" ng-attr-fill="{{res.color}}" style="opacity: 0.8"></path>
+                <path ng-attr-d="M180 260 L120 290 L120 {{res.bottom}} L180 {{res.side}}Z" ng-attr-fill="{{res.color}}" style="opacity:0.7"></path>
+                <path ng-attr-d="M60 {{res.side}} L120 {{res.bottom}} L120 {{res.top}}Z" ng-attr-fill="{{res.color}}" style="opacity:0.6"></path>
+                <path ng-attr-d="M180 {{res.side}} L120 {{res.bottom}} L120 {{res.top}}Z" ng-attr-fill="{{res.color}}" style="opacity:0.5"></path>
+                <text ng-if="res.percent&lt;0" x="120" y="120" style="font-weight:900;font-size:40px" dx="-20" dy="20" fill="rgba(0,0,0,0.5)">?</text>
+              </svg>
+            </div>
+            <div class="title"><a ng-attr-href="?{{res.name}}">{{res.name}}</a><small>
+                當前蓄水量 {{res.volume}}M 
+                (m<sup>3</sup>)</small><small ng-if="res.percent&gt;=0">&nbsp;/ 目前蓄水率 {{res.percent}}%</small><small ng-if="res.percent&lt;0">&nbsp;/ 無目前蓄水率資料</small></div>
+            <div class="line-chart">
+              <svg width="600px" height="200px" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid">
+                <text x="2" y="0" fill="#444" font-size="20">近期水量走勢 (%)</text>
+                <line x1="0" x2="765" y1="175" y2="175" stroke-width="2" stroke="#ccc"></line>
+                <line x1="0" x2="765" y1="5" y2="5" stroke-width="2" stroke="#ccc"></line>
+                <line x1="0" x2="765" y1="141" y2="141" stroke-width="2" stroke="#f00" stroke-dasharray="4 4"></line>
+                <text x="770" y="141" text-anchor="start" dominant-baseline="central" fill="#f00">20%</text>
+                <text x="765" y="198" text-anchor="end" fill="#444">{{res.end}}</text>
+                <text x="2" y="198" text-anchor="start" fill="#444">{{res.start}}</text>
+                <line ng-repeat="link in res.link" ng-attr-x1="{{link[0]}}" ng-attr-x2="{{link[1]}}" ng-attr-y1="{{link[2]}}" ng-attr-y2="{{link[3]}}" stroke="#000" stroke-width="2"></line>
+              </svg>
+            </div>
+            <div ng-if="res.remains &lt;= 20 &amp;&amp; res.remains &gt;= 0" class="remains">預估將在<em>{{res.remains}}</em>週後耗盡</div>
+          </div>
+        </div>
+      </div>
       <div class="reservoir-type">
         <h3>水情告急的主要水庫</h3>
         <div ng-show="loading.exigency" class="loading"><img src="loading.gif">loading</div>
@@ -55,7 +91,7 @@
               <text ng-if="res.percent&lt;0" x="120" y="120" style="font-weight:900;font-size:40px" dx="-20" dy="20" fill="rgba(0,0,0,0.5)">?</text>
             </svg>
           </div>
-          <div class="title">{{res.name}}<small>
+          <div class="title"><a ng-attr-href="?{{res.name}}">{{res.name}}</a><small>
               當前蓄水量 {{res.volume}}M 
               (m<sup>3</sup>)</small><small ng-if="res.percent&gt;=0">&nbsp;/ 目前蓄水率 {{res.percent}}%</small><small ng-if="res.percent&lt;0">&nbsp;/ 無目前蓄水率資料</small></div>
           <div class="line-chart">
@@ -89,7 +125,7 @@
               <text ng-if="res.percent&lt;0" x="120" y="120" style="font-weight:900;font-size:40px" dx="-20" dy="20" fill="rgba(0,0,0,0.5)">?</text>
             </svg>
           </div>
-          <div class="title">{{res.name}}<small>
+          <div class="title"><a ng-attr-href="?{{res.name}}">{{res.name}}</a><small>
               當前蓄水量 {{res.volume}}M 
               (m<sup>3</sup>)</small><small ng-if="res.percent&gt;=0">&nbsp;/ 目前蓄水率 {{res.percent}}%</small><small ng-if="res.percent&lt;0">&nbsp;/ 無目前蓄水率資料</small></div>
           <div class="line-chart">
@@ -123,7 +159,7 @@
               <text ng-if="res.percent&lt;0" x="120" y="120" style="font-weight:900;font-size:40px" dx="-20" dy="20" fill="rgba(0,0,0,0.5)">?</text>
             </svg>
           </div>
-          <div class="title">{{res.name}}<small>
+          <div class="title"><a ng-attr-href="?{{res.name}}">{{res.name}}</a><small>
               當前蓄水量 {{res.volume}}M 
               (m<sup>3</sup>)</small><small ng-if="res.percent&gt;=0">&nbsp;/ 目前蓄水率 {{res.percent}}%</small><small ng-if="res.percent&lt;0">&nbsp;/ 無目前蓄水率資料</small></div>
           <div class="line-chart">

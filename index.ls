@@ -22,6 +22,8 @@ angular.module \main, <[]>
       names = [k for k of data]
       dates = [k for k of data[names[0]]]sort!
       secondary-name = names.filter -> primary-name.indexOf(it)<0
+      search-name = decodeURIComponent(window.location.search.replace(/\?/g, ""))
+      if names.indexOf(search-name) < 0 => search-name = null
 
       x-axis = d3.scale.ordinal!domain dates .range [0 to 765 by 765/dates.length]
       y-axis = d3.scale.linear!domain [0 100] .range [173 7]
@@ -72,6 +74,7 @@ angular.module \main, <[]>
           end: dates[* - 1]
           remains: remains
         $scope.reservoirs.push obj
+      if search-name => $scope.spot = $scope.reservoirs.filter -> it.name == search-name
       $scope.exigency = $scope.reservoirs.filter -> (primary-name.indexOf(it.name) >= 0 and it.remains <= 13 and it.remains >= 0)
       $scope.loading.exigency = false
       $timeout ->
