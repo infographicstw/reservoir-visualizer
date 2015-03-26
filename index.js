@@ -44,10 +44,10 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
     secondaryName = names.filter(function(it){
       return primaryName.indexOf(it) < 0;
     });
-    searchName = decodeURIComponent(window.location.search.replace(/\?/g, ""));
-    if (names.indexOf(searchName) < 0) {
-      searchName = null;
-    }
+    searchName = decodeURIComponent(window.location.search.replace(/\?/g, "")).split(',');
+    searchName = searchName.filter(function(it){
+      return names.indexOf(it) >= 0;
+    });
     xAxis = d3.scale.ordinal().domain(dates).range((function(){
       var i$, step$, results$ = [];
       for (i$ = 0, step$ = 765 / dates.length; step$ < 0 ? i$ >= 765 : i$ <= 765; i$ += step$) {
@@ -134,9 +134,9 @@ x$.controller('main', ['$scope', '$http', '$timeout'].concat(function($scope, $h
       };
       $scope.reservoirs.push(obj);
     }
-    if (searchName) {
+    if (searchName.length) {
       $scope.spot = $scope.reservoirs.filter(function(it){
-        return it.name === searchName;
+        return searchName.indexOf(it.name) >= 0;
       });
     }
     $scope.exigency = $scope.reservoirs.filter(function(it){
